@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Card } from "@/components/ui/card"
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -23,11 +23,20 @@ export default function Home() {
       </div>
 
 
-      <div className="flex items-center mb-10 mt-16">
-        <h2 className="text-xs uppercase tracking-[0.3em] text-muted-foreground/60 font-bold">
-          Blog
-        </h2>
-        <div className="ml-4 h-px flex-grow bg-border opacity-20" />
+      <div className="flex items-center justify-between mb-10 mt-16">
+        <div className="flex items-center flex-1">
+          <h2 className="text-xs uppercase tracking-[0.3em] text-muted-foreground/60 font-bold">
+            Blog
+          </h2>
+          <div className="ml-4 h-px flex-grow bg-border opacity-20" />
+        </div>
+        <Link
+          href="/blog"
+          className="ml-4 text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
+        >
+          View All
+          <span className="group-hover:translate-x-1 transition-transform">→</span>
+        </Link>
       </div>
 
       <div className="space-y-4 mb-16">
@@ -54,11 +63,20 @@ export default function Home() {
         ))}
       </div>
 
-      <div id="projects" className="flex items-center mb-10">
-        <h2 className="text-xs uppercase tracking-[0.3em] text-muted-foreground/60 font-bold">
-          Pinned Projects
-        </h2>
-        <div className="ml-4 h-px flex-grow bg-border opacity-20" />
+      <div id="projects" className="flex items-center justify-between mb-10">
+        <div className="flex items-center flex-1">
+          <h2 className="text-xs uppercase tracking-[0.3em] text-muted-foreground/60 font-bold">
+            Pinned Projects
+          </h2>
+          <div className="ml-4 h-px flex-grow bg-border opacity-20" />
+        </div>
+        <Link
+          href="/projects"
+          className="ml-4 text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
+        >
+          View All
+          <span className="group-hover:translate-x-1 transition-transform">→</span>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
@@ -88,11 +106,11 @@ export default function Home() {
             tags: ["Kubernetes", "Go", "Helm"]
           }
         ].map((project, index) => (
-          <Card
+          <div
             key={index}
-            className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group border-border/50 bg-card"
+            className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group bg-card rounded-lg"
           >
-            <div className="relative h-64 overflow-hidden">
+            <div className="relative h-64 overflow-hidden rounded-t-lg">
               <Image
                 src={project.image}
                 alt={project.title}
@@ -123,7 +141,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
 

@@ -120,6 +120,60 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    position: relative;
+    overflow-x: hidden;
   }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: hsl(var(--background));
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(100, 100, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(200, 100, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 10%, rgba(150, 150, 255, 0.12) 0%, transparent 50%);
+    filter: blur(60px);
+    animation: gradient-shift 20s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% {
+      transform: translate(0%, 0%) rotate(0deg) scale(1);
+    }
+    25% {
+      transform: translate(8%, -8%) rotate(2deg) scale(1.05);
+    }
+    50% {
+      transform: translate(-5%, 10%) rotate(-1deg) scale(1.02);
+    }
+    75% {
+      transform: translate(-8%, -5%) rotate(1.5deg) scale(1.03);
+    }
+  }
+}
+
+.dark body::after {
+  background:
+    radial-gradient(circle at 20% 50%, rgba(60, 60, 70, 0.25) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(50, 50, 60, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(70, 70, 80, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 80% 10%, rgba(55, 55, 65, 0.22) 0%, transparent 50%);
+  filter: blur(90px);
 }
