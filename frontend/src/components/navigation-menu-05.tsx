@@ -6,8 +6,8 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useEffect, useState } from "react";
 
 const navigationMenuItems = [
-  { title: "Blog", href: "#blog" },
-  { title: "Projects", href: "#projects" },
+  { title: "Blog", href: "/blog" },
+  { title: "Projects", href: "/projects" },
 ];
 
 export default function NavigationMenuWithActiveItem() {
@@ -47,7 +47,7 @@ export default function NavigationMenuWithActiveItem() {
       )}
     >
       <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
-        <Link href="#" className="flex flex-col group">
+        <Link href="/" className="flex flex-col group">
           <span className="text-sm font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
             Hugo Marinho Lapa
           </span>
