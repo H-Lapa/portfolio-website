@@ -147,10 +147,10 @@
     bottom: -50%;
     z-index: -1;
     background:
-      radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(100, 100, 255, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 20%, rgba(200, 100, 255, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 80% 10%, rgba(150, 150, 255, 0.12) 0%, transparent 50%);
+      radial-gradient(circle at 20% 50%, rgba(220, 220, 230, 0.4) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(230, 230, 240, 0.35) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(240, 235, 250, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 10%, rgba(225, 225, 240, 0.38) 0%, transparent 50%);
     filter: blur(60px);
     animation: gradient-shift 20s ease infinite;
   }
