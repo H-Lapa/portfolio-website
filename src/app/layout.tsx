@@ -27,10 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -38,7 +35,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NavigationMenuWithActiveItem/>
-          {children}
+          <main className="pt-20">
+            {children}
+          </main>
           <Footer />
         </ThemeProvider>
       </body>

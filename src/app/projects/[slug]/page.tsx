@@ -1,8 +1,11 @@
 import { getProject, getProjects } from "@/lib/markdown";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import Image from "next/image";
+import { extractHeadings } from "@/lib/reading-time";
+import TableOfContents from "@/components/TableOfContents";
+import ReadingProgressBar from "@/components/ReadingProgressBar";
+import Breadcrumb from "@/components/Breadcrumb";
+import MarkdownContent from "@/components/MarkdownContent";
 
 export async function generateStaticParams() {
   const projects = getProjects();
@@ -19,11 +22,22 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     notFound();
   }
 
+  const headings = extractHeadings(project.content);
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6">
-      <article>
+    <>
+      <ReadingProgressBar />
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Projects', href: '/projects' },
+            { label: project.title },
+          ]}
+        />
+
         {project.image && (
-          <div className="relative h-80 w-full mb-8 mt-8 rounded-lg overflow-hidden">
+          <div className="relative h-80 w-full mb-8 rounded-lg overflow-hidden">
             <Image
               src={project.image}
               alt={project.title}
@@ -35,31 +49,50 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </div>
         )}
 
-        <header className="mb-8 mt-8">
-          <h1 className="text-4xl font-bold tracking-tight mb-4">
-            {project.title}
-          </h1>
-          <p className="text-lg text-muted-foreground mb-4">
-            {project.description}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag, index) => (
-              <span
-                key={index}
-                className="text-xs font-mono uppercase tracking-wider px-3 py-1.5 bg-primary/10 text-primary rounded border border-primary/20"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </header>
+        <div className="flex gap-12">
+          <article className="flex-1 min-w-0">
+            <header className="mb-8">
+              <div className="flex items-center gap-3 mb-4 flex-wrap">
+                {project.date && (
+                  <span className="text-sm font-mono text-muted-foreground/40">
+                    {project.date}
+                  </span>
+                )}
+                <span className="text-sm font-mono text-muted-foreground/40">
+                  {project.readingTime} min read
+                </span>
+                {project.lastUpdated && (
+                  <span className="text-sm font-mono text-muted-foreground/40">
+                    Updated: {project.lastUpdated}
+                  </span>
+                )}
+              </div>
+              <h1 className="text-4xl font-bold tracking-tight mb-4">
+                {project.title}
+              </h1>
+              <p className="text-lg text-muted-foreground mb-4">
+                {project.description}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {project.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="text-xs font-mono uppercase tracking-wider px-3 py-1.5 bg-primary/10 text-primary rounded border border-primary/20"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </header>
 
-        <div className="prose prose-slate dark:prose-invert max-w-none">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {project.content}
-          </ReactMarkdown>
+            <MarkdownContent content={project.content} />
+          </article>
+
+          <aside className="w-64 flex-shrink-0">
+            <TableOfContents headings={headings} />
+          </aside>
         </div>
-      </article>
-    </div>
+      </div>
+    </>
   );
 }

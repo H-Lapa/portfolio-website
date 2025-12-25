@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { calculateReadingTime } from './reading-time';
 
 const contentDirectory = path.join(process.cwd(), 'content');
 
@@ -11,6 +12,8 @@ export interface BlogPost {
   description: string;
   category: string;
   content: string;
+  readingTime: number;
+  lastUpdated?: string;
 }
 
 export interface Project {
@@ -20,6 +23,9 @@ export interface Project {
   image: string;
   tags: string[];
   content: string;
+  readingTime: number;
+  date?: string;
+  lastUpdated?: string;
 }
 
 export function getBlogPosts(): BlogPost[] {
@@ -46,6 +52,8 @@ export function getBlogPosts(): BlogPost[] {
         description: data.description || '',
         category: data.category || '',
         content,
+        readingTime: calculateReadingTime(content),
+        lastUpdated: data.lastUpdated,
       };
     });
 
@@ -75,6 +83,8 @@ export function getBlogPost(slug: string): BlogPost | null {
     description: data.description || '',
     category: data.category || '',
     content,
+    readingTime: calculateReadingTime(content),
+    lastUpdated: data.lastUpdated,
   };
 }
 
@@ -102,6 +112,9 @@ export function getProjects(): Project[] {
         image: data.image || '',
         tags: data.tags || [],
         content,
+        readingTime: calculateReadingTime(content),
+        date: data.date,
+        lastUpdated: data.lastUpdated,
       };
     });
 
@@ -126,5 +139,8 @@ export function getProject(slug: string): Project | null {
     image: data.image || '',
     tags: data.tags || [],
     content,
+    readingTime: calculateReadingTime(content),
+    date: data.date,
+    lastUpdated: data.lastUpdated,
   };
 }
