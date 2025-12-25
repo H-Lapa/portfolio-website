@@ -26,6 +26,7 @@ export interface Project {
   readingTime: number;
   date?: string;
   lastUpdated?: string;
+  githubUrl?: string;
 }
 
 export function getBlogPosts(): BlogPost[] {
@@ -115,6 +116,7 @@ export function getProjects(): Project[] {
         readingTime: calculateReadingTime(content),
         date: data.date,
         lastUpdated: data.lastUpdated,
+        githubUrl: data.githubUrl,
       };
     });
 
@@ -142,5 +144,6 @@ export function getProject(slug: string): Project | null {
     readingTime: calculateReadingTime(content),
     date: data.date,
     lastUpdated: data.lastUpdated,
+    githubUrl: data.githubUrl,
   };
 }

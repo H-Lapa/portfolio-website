@@ -6,6 +6,7 @@ import TableOfContents from "@/components/TableOfContents";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import Breadcrumb from "@/components/Breadcrumb";
 import MarkdownContent from "@/components/MarkdownContent";
+import { GithubIcon } from "lucide-react";
 
 export async function generateStaticParams() {
   const projects = getProjects();
@@ -73,15 +74,28 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               <p className="text-lg text-muted-foreground mb-4">
                 {project.description}
               </p>
-              <div className="flex flex-wrap gap-2">
-                {project.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="text-xs font-mono uppercase tracking-wider px-3 py-1.5 bg-primary/10 text-primary rounded border border-primary/20"
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <div className="flex flex-wrap gap-2">
+                  {project.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="text-xs font-mono uppercase tracking-wider px-3 py-1.5 bg-primary/10 text-primary rounded border border-primary/20"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-4 py-2 bg-card border border-border hover:border-primary rounded-lg"
                   >
-                    {tag}
-                  </span>
-                ))}
+                    <GithubIcon className="w-4 h-4" />
+                    View on GitHub
+                  </a>
+                )}
               </div>
             </header>
 

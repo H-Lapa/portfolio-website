@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getProjects } from "@/lib/markdown";
+import { GithubIcon } from "lucide-react";
 
 export default function ProjectsPage() {
   const projects = getProjects();
@@ -39,15 +40,29 @@ export default function ProjectsPage() {
                   <p className="text-sm text-muted-foreground leading-relaxed mb-3">
                     {project.description}
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag, tagIndex) => (
-                      <span
-                        key={tagIndex}
-                        className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 bg-primary/10 text-primary rounded border border-primary/20"
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag, tagIndex) => (
+                        <span
+                          key={tagIndex}
+                          className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 bg-primary/10 text-primary rounded border border-primary/20"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-1.5 text-xs font-medium text-foreground/80 hover:text-primary transition-colors px-3 py-1.5 bg-background/60 backdrop-blur-sm rounded border border-border hover:border-primary"
                       >
-                        {tag}
-                      </span>
-                    ))}
+                        <GithubIcon className="w-3.5 h-3.5" />
+                        Code
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
