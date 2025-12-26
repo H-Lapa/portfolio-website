@@ -15,7 +15,8 @@ function getTextContent(children: ReactNode): string {
     return children.map(getTextContent).join('');
   }
   if (children && typeof children === 'object' && 'props' in children) {
-    return getTextContent(children.props.children);
+    const element = children as { props: { children?: ReactNode } };
+    return getTextContent(element.props.children);
   }
   return '';
 }
