@@ -40,11 +40,11 @@ export default function NavigationMenuWithActiveItem() {
   return (
     <nav
       className={cn(
-        "fixed top-0 w-full z-50 transition-all duration-300",
+        "fixed top-0 w-full z-50 transition-all duration-300 origin-top",
         scrolled
           ? "bg-background/80 backdrop-blur-lg border-b border-border/50 py-3"
           : "bg-transparent py-4",
-        hidden ? "-translate-y-full" : "translate-y-0"
+        hidden ? "-translate-y-full scale-95 opacity-0 blur-sm" : "translate-y-0 scale-100 opacity-100 blur-0"
       )}
     >
       <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
