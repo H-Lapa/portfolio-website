@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getBlogPosts, getProjects } from "@/lib/markdown";
 import ProjectCard from "@/components/ProjectCard";
+import GetInTouch from "@/components/GetInTouch";
 
 export default function Home() {
   const blogPosts = getBlogPosts().slice(0, 2); // Get latest 2 posts
@@ -9,7 +10,7 @@ export default function Home() {
   return (
     <div className="justify-center max-w-5xl mx-auto px-4 py-6">
 
-      <div className="flex flex-col items-center gap-6 my-12">
+      <div className="flex flex-col items-center gap-6 mt-4 mb-12">
         <Image
           src="/profile-picture.jpg"
           alt="Picture of Hugos Face"
@@ -26,6 +27,7 @@ export default function Home() {
         </div>
       </div>
 
+      <GetInTouch />
 
       <div className="flex items-center justify-between mb-10 mt-16">
         <div className="flex items-center flex-1">
@@ -88,8 +90,6 @@ export default function Home() {
           <ProjectCard key={index} project={project} />
         ))}
       </div>
-
-
 
     </div>
   );
