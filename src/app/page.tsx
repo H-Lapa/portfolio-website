@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getBlogPosts, getProjects } from "@/lib/markdown";
+import ProjectCard from "@/components/ProjectCard";
 
 export default function Home() {
   const blogPosts = getBlogPosts().slice(0, 2); // Get latest 2 posts
@@ -84,45 +85,7 @@ export default function Home() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
         {projects.map((project, index) => (
-          <Link
-            key={index}
-            href={`/projects/${project.slug}`}
-            className="block"
-          >
-            <div className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group bg-card rounded-lg">
-              <div className="relative h-64 overflow-hidden rounded-t-lg">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  width={400}
-                  height={300}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent opacity-90" />
-
-                {/* Content overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-xl font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag, tagIndex) => (
-                      <span
-                        key={tagIndex}
-                        className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 bg-primary/10 text-primary rounded border border-primary/20"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
+          <ProjectCard key={index} project={project} />
         ))}
       </div>
 

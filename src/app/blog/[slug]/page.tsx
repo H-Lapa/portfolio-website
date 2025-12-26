@@ -5,6 +5,7 @@ import TableOfContents from "@/components/TableOfContents";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
 import Breadcrumb from "@/components/Breadcrumb";
 import MarkdownContent from "@/components/MarkdownContent";
+import { GithubIcon, ExternalLink } from "lucide-react";
 
 export async function generateStaticParams() {
   const posts = getBlogPosts();
@@ -60,6 +61,33 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   </span>
                 )}
               </div>
+
+              {(post.liveUrl || post.githubUrl) && (
+                <div className="flex flex-wrap gap-3 mt-4">
+                  {post.liveUrl && (
+                    <a
+                      href={post.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-4 py-2 bg-primary/10 border border-primary/20 hover:border-primary rounded-lg"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      View Project
+                    </a>
+                  )}
+                  {post.githubUrl && (
+                    <a
+                      href={post.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-4 py-2 bg-card border border-border hover:border-primary rounded-lg"
+                    >
+                      <GithubIcon className="w-4 h-4" />
+                      View on GitHub
+                    </a>
+                  )}
+                </div>
+              )}
             </header>
 
             <MarkdownContent content={post.content} />

@@ -3,7 +3,9 @@ title: "GitOps Delivery Pipeline"
 description: "Standardized software delivery using ArgoCD and declarative configs."
 image: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=400&h=300&fit=crop"
 tags: ["ArgoCD", "Kubernetes", "GitOps"]
-githubUrl: "https://github.com/yourusername/gitops-pipeline"
+githubUrl: "https://github.com/hugomlapa/gitops-pipeline"
+blogPostSlug: "service-mesh"
+liveUrl: "https://argocd.demo.hugomlapa.com"
 ---
 
 # GitOps Delivery Pipeline

@@ -3,7 +3,9 @@ title: "Automated Landing Zones"
 description: "Multi-account AWS environments with automated governance and compliance."
 image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=300&fit=crop"
 tags: ["Terraform", "AWS", "Python"]
-githubUrl: "https://github.com/yourusername/automated-landing-zones"
+githubUrl: "https://github.com/hugomlapa/aws-landing-zones"
+blogPostSlug: "terraform-state"
+liveUrl: "https://aws-console.demo.hugomlapa.com"
 ---
 
 # Automated AWS Landing Zones

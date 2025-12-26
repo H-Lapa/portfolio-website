@@ -14,6 +14,8 @@ export interface BlogPost {
   content: string;
   readingTime: number;
   lastUpdated?: string;
+  githubUrl?: string;
+  liveUrl?: string;
 }
 
 export interface Project {
@@ -27,6 +29,8 @@ export interface Project {
   date?: string;
   lastUpdated?: string;
   githubUrl?: string;
+  blogPostSlug?: string;
+  liveUrl?: string;
 }
 
 export function getBlogPosts(): BlogPost[] {
@@ -55,6 +59,8 @@ export function getBlogPosts(): BlogPost[] {
         content,
         readingTime: calculateReadingTime(content),
         lastUpdated: data.lastUpdated,
+        githubUrl: data.githubUrl,
+        liveUrl: data.liveUrl,
       };
     });
 
@@ -86,6 +92,8 @@ export function getBlogPost(slug: string): BlogPost | null {
     content,
     readingTime: calculateReadingTime(content),
     lastUpdated: data.lastUpdated,
+    githubUrl: data.githubUrl,
+    liveUrl: data.liveUrl,
   };
 }
 
@@ -117,6 +125,8 @@ export function getProjects(): Project[] {
         date: data.date,
         lastUpdated: data.lastUpdated,
         githubUrl: data.githubUrl,
+        blogPostSlug: data.blogPostSlug,
+        liveUrl: data.liveUrl,
       };
     });
 
@@ -145,5 +155,7 @@ export function getProject(slug: string): Project | null {
     date: data.date,
     lastUpdated: data.lastUpdated,
     githubUrl: data.githubUrl,
+    blogPostSlug: data.blogPostSlug,
+    liveUrl: data.liveUrl,
   };
 }
