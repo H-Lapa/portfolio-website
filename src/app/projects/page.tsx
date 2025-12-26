@@ -1,5 +1,10 @@
 import { getProjects } from "@/lib/markdown";
 import ProjectCard from "@/components/ProjectCard";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projects",
+};
 
 export default function ProjectsPage() {
   const projects = getProjects();

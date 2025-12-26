@@ -1,5 +1,10 @@
 import Link from "next/link";
 import { getBlogPosts } from "@/lib/markdown";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Blog",
+};
 
 export default function BlogPage() {
   const blogPosts = getBlogPosts();

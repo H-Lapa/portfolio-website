@@ -6,12 +6,27 @@ import ReadingProgressBar from "@/components/ReadingProgressBar";
 import Breadcrumb from "@/components/Breadcrumb";
 import MarkdownContent from "@/components/MarkdownContent";
 import { GithubIcon, ExternalLink } from "lucide-react";
+import { Metadata } from "next";
 
 export async function generateStaticParams() {
   const posts = getBlogPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getBlogPost(slug);
+
+  if (!post) {
+    return { title: "Post Not Found" };
+  }
+
+  return {
+    title: post.title,
+    description: post.description,
+  };
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {

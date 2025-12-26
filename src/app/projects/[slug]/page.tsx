@@ -8,12 +8,27 @@ import ReadingProgressBar from "@/components/ReadingProgressBar";
 import Breadcrumb from "@/components/Breadcrumb";
 import MarkdownContent from "@/components/MarkdownContent";
 import { GithubIcon, ExternalLink, FileText } from "lucide-react";
+import { Metadata } from "next";
 
 export async function generateStaticParams() {
   const projects = getProjects();
   return projects.map((project) => ({
     slug: project.slug,
   }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProject(slug);
+
+  if (!project) {
+    return { title: "Project Not Found" };
+  }
+
+  return {
+    title: project.title,
+    description: project.description,
+  };
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
