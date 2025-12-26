@@ -31,6 +31,7 @@ export interface Project {
   githubUrl?: string;
   blogPostSlug?: string;
   liveUrl?: string;
+  pinned?: boolean;
 }
 
 export function getBlogPosts(): BlogPost[] {
@@ -127,10 +128,16 @@ export function getProjects(): Project[] {
         githubUrl: data.githubUrl,
         blogPostSlug: data.blogPostSlug,
         liveUrl: data.liveUrl,
+        pinned: data.pinned || false,
       };
     });
 
-  return projects;
+  // Sort projects: pinned first, then by date if available
+  return projects.sort((a, b) => {
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
+    return 0;
+  });
 }
 
 export function getProject(slug: string): Project | null {
@@ -157,5 +164,6 @@ export function getProject(slug: string): Project | null {
     githubUrl: data.githubUrl,
     blogPostSlug: data.blogPostSlug,
     liveUrl: data.liveUrl,
+    pinned: data.pinned || false,
   };
 }

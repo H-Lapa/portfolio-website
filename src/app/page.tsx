@@ -6,7 +6,7 @@ import GetInTouch from "@/components/GetInTouch";
 
 export default function Home() {
   const blogPosts = getBlogPosts().slice(0, 2); // Get latest 2 posts
-  const projects = getProjects().slice(0, 4); // Get first 4 projects
+  const projects = getProjects().filter(p => p.pinned); // Get only pinned projects
   return (
     <div className="justify-center max-w-5xl mx-auto px-4 py-6">
 

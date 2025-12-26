@@ -5,6 +5,7 @@ image: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=400&h=300&fi
 tags: ["Java", "Git", "Version Control", "Maven"]
 githubUrl: "https://github.com/H-Lapa/Java-Git"
 blogPostSlug: "building-git-in-java"
+pinned: true
 ---
 
 # Java-Git: Git Implementation in Java

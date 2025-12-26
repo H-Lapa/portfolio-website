@@ -5,6 +5,7 @@ image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300
 tags: ["Next.js", "TypeScript", "Tailwind"]
 githubUrl: "https://github.com/hugomlapa/portfolio"
 blogPostSlug: "building-portfolio-nextjs"
+pinned: true
 ---
 
 # Portfolio Website
