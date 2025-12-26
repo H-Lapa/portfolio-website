@@ -26,9 +26,9 @@ export function ThemeToggle() {
       className="inline-flex items-center justify-center w-9 h-9 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
     >
       {theme === "dark" ? (
-        <Sun className="h-5 w-5" />
-      ) : (
         <Moon className="h-5 w-5" />
+      ) : (
+        <Sun className="h-5 w-5" />
       )}
       <span className="sr-only">Toggle theme</span>
     </button>
