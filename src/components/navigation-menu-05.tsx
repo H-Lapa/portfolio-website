@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 const navigationMenuItems = [
   { title: "Blog", href: "/blog" },
   { title: "Projects", href: "/projects" },
+  { title: "About", href: "/about" },
 ];
 
 export default function NavigationMenuWithActiveItem() {
