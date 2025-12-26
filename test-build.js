@@ -187,7 +187,7 @@ async function runTests() {
     'blog.html',
     'projects.html',
     'blog/building-portfolio-nextjs.html',
-    'blog/service-mesh.html',
+    'blog/building-git-in-java.html',
     'blog/terraform-state.html',
     'projects/portfolio-website.html',
     'projects/gitops-pipeline.html',
