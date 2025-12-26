@@ -44,6 +44,18 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
     };
   }, [headings]);
 
+  useEffect(() => {
+    if (activeId) {
+      const activeElement = document.querySelector(`a[href="#${activeId}"]`);
+      if (activeElement) {
+        activeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+        });
+      }
+    }
+  }, [activeId]);
+
   if (headings.length === 0) {
     return null;
   }
@@ -55,11 +67,16 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
           Contents
         </h4>
       </div>
-      <ul className="space-y-2 text-sm border-l border-border/40">
+      <div className="max-h-[calc(100vh-8rem)] overflow-y-auto scrollbar-hide">
+        <ul className="space-y-2 text-sm border-l border-border/40">
         {headings.map((heading) => (
           <li
             key={heading.id}
-            style={{ paddingLeft: `${(heading.level - 1) * 0.75}rem` }}
+            className={`border-l-2 -ml-px transition-all ${
+              activeId === heading.id
+                ? 'border-primary'
+                : 'border-transparent'
+            }`}
           >
             <a
               href={`#${heading.id}`}
@@ -70,17 +87,19 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                   block: 'start',
                 });
               }}
-              className={`block py-1 pl-4 border-l-2 -ml-px transition-all hover:text-foreground hover:border-primary ${
+              style={{ paddingLeft: `${(heading.level - 1) * 0.75 + 1}rem` }}
+              className={`block py-1 transition-all hover:text-foreground ${
                 activeId === heading.id
-                  ? 'text-primary border-primary font-medium'
-                  : 'text-muted-foreground border-transparent'
+                  ? 'text-primary font-medium'
+                  : 'text-muted-foreground'
               }`}
             >
               {heading.text}
             </a>
           </li>
         ))}
-      </ul>
+        </ul>
+      </div>
     </nav>
   );
 }

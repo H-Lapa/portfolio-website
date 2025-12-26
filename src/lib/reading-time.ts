@@ -13,11 +13,14 @@ export function calculateReadingTime(text: string): number {
  * Extract headings from markdown content
  */
 export function extractHeadings(markdown: string): { id: string; text: string; level: number }[] {
+  // Remove code blocks first to avoid matching headings inside them
+  const withoutCodeBlocks = markdown.replace(/```[\s\S]*?```/g, '');
+
   const headingRegex = /^(#{1,6})\s+(.+)$/gm;
   const headings: { id: string; text: string; level: number }[] = [];
   let match;
 
-  while ((match = headingRegex.exec(markdown)) !== null) {
+  while ((match = headingRegex.exec(withoutCodeBlocks)) !== null) {
     const level = match[1].length;
     const text = match[2].trim();
     // Create URL-safe ID from heading text
