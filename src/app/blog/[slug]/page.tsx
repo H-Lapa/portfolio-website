@@ -42,7 +42,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <>
       <ReadingProgressBar />
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
@@ -51,40 +51,40 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           ]}
         />
 
-        <div className="flex gap-12">
+        <div className="flex flex-col xl:flex-row gap-8 xl:gap-12">
           <article className="flex-1 min-w-0">
             <header className="mb-8">
-              <h1 className="text-4xl font-bold tracking-tight mb-4">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
                 {post.title}
               </h1>
-              <p className="text-lg text-muted-foreground mb-4">
+              <p className="text-base sm:text-lg text-muted-foreground mb-4">
                 {post.description}
               </p>
-              <div className="flex items-center gap-3 flex-wrap">
+              <div className="flex items-center gap-2 sm:gap-3 flex-wrap text-xs sm:text-sm">
                 <span className="text-xs font-mono text-primary/60 bg-primary/10 px-2 py-1 rounded border border-primary/20">
                   {post.category}
                 </span>
-                <span className="text-sm font-mono text-muted-foreground/40">
+                <span className="font-mono text-muted-foreground/40">
                   {post.date}
                 </span>
-                <span className="text-sm font-mono text-muted-foreground/40">
+                <span className="font-mono text-muted-foreground/40">
                   {post.readingTime} min read
                 </span>
                 {post.lastUpdated && (
-                  <span className="text-sm font-mono text-muted-foreground/40">
+                  <span className="font-mono text-muted-foreground/40">
                     Updated: {post.lastUpdated}
                   </span>
                 )}
               </div>
 
               {(post.liveUrl || post.githubUrl) && (
-                <div className="flex flex-wrap gap-3 mt-4">
+                <div className="flex flex-wrap gap-2 sm:gap-3 mt-4">
                   {post.liveUrl && (
                     <a
                       href={post.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-4 py-2 bg-primary/10 border border-primary/20 hover:border-primary rounded-lg"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-3 sm:px-4 py-2 bg-primary/10 border border-primary/20 hover:border-primary rounded-lg"
                     >
                       <ExternalLink className="w-4 h-4" />
                       View Project
@@ -95,7 +95,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                       href={post.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-4 py-2 bg-card border border-border hover:border-primary rounded-lg"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-3 sm:px-4 py-2 bg-card border border-border hover:border-primary rounded-lg"
                     >
                       <GithubIcon className="w-4 h-4" />
                       View on GitHub
@@ -104,6 +104,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 </div>
               )}
             </header>
+
+            <TableOfContents headings={headings} />
 
             <MarkdownContent content={post.content} />
           </article>

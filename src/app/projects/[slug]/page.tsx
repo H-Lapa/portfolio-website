@@ -44,7 +44,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   return (
     <>
       <ReadingProgressBar />
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
@@ -54,7 +54,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         />
 
         {project.image && (
-          <div className="relative h-80 w-full mb-8 rounded-lg overflow-hidden">
+          <div className="relative h-48 sm:h-64 xl:h-80 w-full mb-8 rounded-lg overflow-hidden">
             <Image
               src={project.image}
               alt={project.title}
@@ -66,48 +66,48 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </div>
         )}
 
-        <div className="flex gap-12">
+        <div className="flex flex-col xl:flex-row gap-8 xl:gap-12">
           <article className="flex-1 min-w-0">
             <header className="mb-8">
-              <div className="flex items-center gap-3 mb-4 flex-wrap">
+              <div className="flex items-center gap-2 sm:gap-3 mb-4 flex-wrap text-xs sm:text-sm">
                 {project.date && (
-                  <span className="text-sm font-mono text-muted-foreground/40">
+                  <span className="font-mono text-muted-foreground/40">
                     {project.date}
                   </span>
                 )}
-                <span className="text-sm font-mono text-muted-foreground/40">
+                <span className="font-mono text-muted-foreground/40">
                   {project.readingTime} min read
                 </span>
                 {project.lastUpdated && (
-                  <span className="text-sm font-mono text-muted-foreground/40">
+                  <span className="font-mono text-muted-foreground/40">
                     Updated: {project.lastUpdated}
                   </span>
                 )}
               </div>
-              <h1 className="text-4xl font-bold tracking-tight mb-4">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
                 {project.title}
               </h1>
-              <p className="text-lg text-muted-foreground mb-4">
+              <p className="text-base sm:text-lg text-muted-foreground mb-4">
                 {project.description}
               </p>
               <div className="flex flex-wrap gap-2">
                 {project.tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="text-xs font-mono uppercase tracking-wider px-3 py-1.5 bg-primary/10 text-primary rounded border border-primary/20"
+                    className="text-xs font-mono uppercase tracking-wider px-2.5 sm:px-3 py-1.5 bg-primary/10 text-primary rounded border border-primary/20"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <div className="flex flex-wrap gap-3 mt-6">
+              <div className="flex flex-wrap gap-2 sm:gap-3 mt-6">
                 {project.liveUrl && (
                   <a
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-4 py-2 bg-primary/10 border border-primary/20 hover:border-primary rounded-lg"
+                    className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-3 sm:px-4 py-2 bg-primary/10 border border-primary/20 hover:border-primary rounded-lg"
                   >
                     <ExternalLink className="w-4 h-4" />
                     View Live Demo
@@ -118,7 +118,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-4 py-2 bg-card border border-border hover:border-primary rounded-lg"
+                    className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-3 sm:px-4 py-2 bg-card border border-border hover:border-primary rounded-lg"
                   >
                     <GithubIcon className="w-4 h-4" />
                     View on GitHub
@@ -127,7 +127,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 {project.blogPostSlug && (
                   <Link
                     href={`/blog/${project.blogPostSlug}`}
-                    className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-4 py-2 bg-card border border-border hover:border-primary rounded-lg"
+                    className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors px-3 sm:px-4 py-2 bg-card border border-border hover:border-primary rounded-lg"
                   >
                     <FileText className="w-4 h-4" />
                     Read Blog Post
@@ -135,6 +135,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 )}
               </div>
             </header>
+
+            <TableOfContents headings={headings} />
 
             <MarkdownContent content={project.content} />
           </article>

@@ -22,7 +22,7 @@ export default function ProjectCard({ project }: { project: Project }) {
       className={`block group ${project.liveUrl ? 'cursor-pointer' : ''}`}
     >
       <div className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-card rounded-lg">
-        <div className="relative h-64 overflow-hidden rounded-t-lg">
+        <div className="relative h-56 sm:h-64 overflow-hidden rounded-t-lg">
           <Image
             src={project.image}
             alt={project.title}
@@ -32,19 +32,19 @@ export default function ProjectCard({ project }: { project: Project }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent opacity-90" />
 
-          <div className="absolute bottom-0 left-0 right-0 p-6">
-            <h3 className="text-xl font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
+          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
               {project.title}
             </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-3">
               {project.description}
             </p>
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex flex-wrap gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-2">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 {project.tags.map((tag, tagIndex) => (
                   <span
                     key={tagIndex}
-                    className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 bg-primary/10 text-primary rounded border border-primary/20"
+                    className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider px-2 py-1 bg-primary/10 text-primary rounded border border-primary/20"
                   >
                     {tag}
                   </span>
@@ -54,19 +54,19 @@ export default function ProjectCard({ project }: { project: Project }) {
                 {project.githubUrl && (
                   <button
                     onClick={(e) => handleButtonClick(e, project.githubUrl!)}
-                    className="flex items-center gap-1.5 text-xs font-medium text-foreground/80 hover:text-primary transition-colors px-3 py-1.5 bg-background/60 backdrop-blur-sm rounded border border-border hover:border-primary z-10 relative"
+                    className="flex items-center gap-1.5 text-xs font-medium text-foreground/80 hover:text-primary active:scale-95 transition-all px-3 py-2 sm:py-1.5 bg-background/60 backdrop-blur-sm rounded border border-border hover:border-primary z-10 relative touch-manipulation"
                     title="View on GitHub"
                   >
-                    <GithubIcon className="w-3.5 h-3.5" />
+                    <GithubIcon className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                   </button>
                 )}
                 {project.blogPostSlug && (
                   <button
                     onClick={(e) => handleButtonClick(e, `/blog/${project.blogPostSlug}`)}
-                    className="flex items-center gap-1.5 text-xs font-medium text-foreground/80 hover:text-primary transition-colors px-3 py-1.5 bg-background/60 backdrop-blur-sm rounded border border-border hover:border-primary z-10 relative"
+                    className="flex items-center gap-1.5 text-xs font-medium text-foreground/80 hover:text-primary active:scale-95 transition-all px-3 py-2 sm:py-1.5 bg-background/60 backdrop-blur-sm rounded border border-border hover:border-primary z-10 relative touch-manipulation"
                     title="Read Blog Post"
                   >
-                    <FileText className="w-3.5 h-3.5" />
+                    <FileText className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                   </button>
                 )}
               </div>

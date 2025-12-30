@@ -8,19 +8,19 @@ export default function Home() {
   const blogPosts = getBlogPosts().slice(0, 2); // Get latest 2 posts
   const projects = getProjects().filter(p => p.pinned); // Get only pinned projects
   return (
-    <div className="justify-center max-w-5xl mx-auto px-4 py-6">
+    <div className="justify-center max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
-      <div className="flex flex-col items-center gap-6 mt-4 mb-12">
+      <div className="flex flex-col items-center gap-4 sm:gap-6 mt-4 mb-12">
         <Image
           src="/profile-picture.jpg"
           alt="Picture of Hugos Face"
           width={200}
           height={200}
-          className="rounded-full border-4 border-border shadow-lg"
+          className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full border-4 border-border shadow-lg"
         />
         <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">Hugo Marinho Lapa</h1>
-          <p className="text-lg text-muted-foreground">Platform Engineer @ Go Reply</p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Hugo Marinho Lapa</h1>
+          <p className="text-base sm:text-lg text-muted-foreground">Platform Engineer @ Go Reply</p>
           <p className="text-sm text-muted-foreground flex items-center justify-center gap-1">
             📍 London, UK
           </p>

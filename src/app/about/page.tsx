@@ -7,9 +7,9 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-2">
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold tracking-tight mb-3">About</h1>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <div className="mb-8 sm:mb-12">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">About</h1>
       </div>
 
       <div className="mb-12 space-y-4 text-muted-foreground leading-relaxed">
@@ -33,8 +33,8 @@ export default function AboutPage() {
 
       <div className="space-y-8">
         <div>
-          <h2 className="text-2xl font-bold mb-6">Skills & Technologies</h2>
-          <div className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Skills & Technologies</h2>
+          <div className="flex gap-6 sm:gap-8 overflow-x-auto pb-4 scrollbar-hide">
             {[
               { name: "Python", slug: "python" },
               { name: "Go", slug: "go" },
@@ -48,9 +48,9 @@ export default function AboutPage() {
             ].map((skill) => (
               <div
                 key={skill.name}
-                className="flex flex-col items-center gap-2 min-w-[60px]"
+                className="flex flex-col items-center gap-2 min-w-[60px] touch-manipulation"
               >
-                <div className="w-12 h-12 flex items-center justify-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">
                   <img
                     src={`https://cdn.simpleicons.org/${skill.slug}/gray`}
                     alt={skill.name}

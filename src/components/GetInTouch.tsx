@@ -26,7 +26,7 @@ const socialLinks = [
 export default function GetInTouch() {
   return (
     <section className="mb-8">
-      <div className="flex items-center gap-4 flex-wrap">
+      <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
         <h2 className="text-xs uppercase tracking-[0.3em] text-muted-foreground/60 font-bold">
           Get in touch
         </h2>
@@ -36,7 +36,7 @@ export default function GetInTouch() {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-primary transition-colors"
+            className="text-muted-foreground hover:text-primary active:scale-95 transition-all p-1 touch-manipulation"
             aria-label={link.name}
           >
             {link.icon}
