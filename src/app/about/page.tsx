@@ -37,34 +37,45 @@ export default function AboutPage() {
       <div className="space-y-8">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Skills & Technologies</h2>
-          <div className="flex gap-6 sm:gap-8 overflow-x-auto pb-4 scrollbar-hide">
-            {[
-              { name: "Python", slug: "python" },
-              { name: "Go", slug: "go" },
-              { name: "Terraform", slug: "terraform" },
-              { name: "JavaScript", slug: "javascript" },
-              { name: "React", slug: "react" },
-              { name: "Node.js", slug: "nodedotjs" },
-              { name: "GCP", slug: "googlecloud" },
-              { name: "Git", slug: "git" },
-              { name: "Redis", slug: "redis" },
-            ].map((skill) => (
-              <div
-                key={skill.name}
-                className="flex flex-col items-center gap-2 min-w-[60px] touch-manipulation"
-              >
-                <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">
-                  <img
-                    src={`https://cdn.simpleicons.org/${skill.slug}/gray`}
-                    alt={skill.name}
-                    className="w-full h-full opacity-70 hover:opacity-100 transition-opacity"
-                  />
+          <div className="relative overflow-hidden">
+            <div className="flex gap-6 sm:gap-8 animate-scroll-loop">
+              {[
+                { name: "Python", slug: "python" },
+                { name: "Go", slug: "go" },
+                { name: "Terraform", slug: "terraform" },
+                { name: "JavaScript", slug: "javascript" },
+                { name: "React", slug: "react" },
+                { name: "Node.js", slug: "nodedotjs" },
+                { name: "GCP", slug: "googlecloud" },
+                { name: "Git", slug: "git" },
+                { name: "Redis", slug: "redis" },
+                { name: "Python", slug: "python" },
+                { name: "Go", slug: "go" },
+                { name: "Terraform", slug: "terraform" },
+                { name: "JavaScript", slug: "javascript" },
+                { name: "React", slug: "react" },
+                { name: "Node.js", slug: "nodedotjs" },
+                { name: "GCP", slug: "googlecloud" },
+                { name: "Git", slug: "git" },
+                { name: "Redis", slug: "redis" },
+              ].map((skill, index) => (
+                <div
+                  key={`${skill.name}-${index}`}
+                  className="flex flex-col items-center gap-2 min-w-[60px] sm:min-w-[80px] flex-shrink-0"
+                >
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">
+                    <img
+                      src={`https://cdn.simpleicons.org/${skill.slug}/gray`}
+                      alt={skill.name}
+                      className="w-full h-full opacity-70 hover:opacity-100 transition-opacity"
+                    />
+                  </div>
+                  <span className="text-xs text-muted-foreground text-center whitespace-nowrap">
+                    {skill.name}
+                  </span>
                 </div>
-                <span className="text-xs text-muted-foreground text-center whitespace-nowrap">
-                  {skill.name}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

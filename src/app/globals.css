@@ -234,6 +234,24 @@
       transform: translate(-8%, -5%) rotate(1.5deg) scale(1.03);
     }
   }
+
+  /* Skills scroll animation */
+  @keyframes scroll-loop {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-scroll-loop {
+    animation: scroll-loop 30s linear infinite;
+  }
+
+  .animate-scroll-loop:hover {
+    animation-play-state: paused;
+  }
 }
 
 .dark body::after {
