@@ -47,18 +47,6 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
     };
   }, [headings]);
 
-  useEffect(() => {
-    if (activeId) {
-      const activeElement = document.querySelector(`a[href="#${activeId}"]`);
-      if (activeElement) {
-        activeElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-        });
-      }
-    }
-  }, [activeId]);
-
   if (headings.length === 0) {
     return null;
   }
