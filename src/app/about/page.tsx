@@ -10,6 +10,9 @@ export default function AboutPage() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
       <div className="mb-8 sm:mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">About</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">
+          Platform Engineer passionate about cloud infrastructure and DevOps.
+        </p>
       </div>
 
       <div className="mb-12 space-y-4 text-muted-foreground leading-relaxed">
