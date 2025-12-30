@@ -4,6 +4,7 @@ import "./globals.css";
 import NavigationMenuWithActiveItem from "@/components/navigation-menu-05"
 import { ThemeProvider } from "@/components/theme-provider"
 import Footer from "@/components/footer"
+import ScrollToTop from "@/components/scroll-to-top"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,8 +58,9 @@ export default function RootLayout({
           enableSystem={true}
           disableTransitionOnChange
         >
+          <ScrollToTop />
           <NavigationMenuWithActiveItem/>
-          <main className="pt-20">
+          <main className="pt-24 sm:pt-28">
             {children}
           </main>
           <Footer />
