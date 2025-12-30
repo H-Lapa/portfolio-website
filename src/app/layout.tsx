@@ -60,7 +60,7 @@ export default function RootLayout({
         >
           <ScrollToTop />
           <NavigationMenuWithActiveItem/>
-          <main className="pt-28 sm:pt-32">
+          <main className="pt-20 sm:pt-24 md:pt-28">
             {children}
           </main>
           <Footer />
