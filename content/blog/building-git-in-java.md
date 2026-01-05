@@ -6,9 +6,9 @@ description: "A deep dive into Git's internals by implementing core Git commands
 githubUrl: "https://github.com/H-Lapa/Java-Git"
 ---
 
-I thought I understood Git. I'd been using it for years, committing code on  GitHub or GitLab without much thought. Like most developers, I treated Git as a black box, relying on a few familiar commands like `git add`, `git commit`, `git push` and understanding basic branching strategies. 
+I thought I understood Git. I'd been using it for years, committing code on GitHub or GitLab without much thought. Like most developers, I treated Git as a black box, relying on a few familiar commands like `git add`, `git commit`, `git push` and understanding basic branching strategies. 
 
-But it wasn't until I built a Git implementation in Java that I realised how shallow my understand of Git's version control really was.
+But it wasn’t until I built my own Git implementation in Java that I realised how shallow my understanding of version control really was.
 
 This project was motivated by a desire to better understand the tools I rely on daily and to learn what happens under the hood when running common Git commands.
 
@@ -16,11 +16,11 @@ This project was motivated by a desire to better understand the tools I rely on 
 
 Whenever Git needs to save a change, it records the contents, calculates a hash from those contents, and uses that hash as the object’s identity. From that point on, the object is treated as immutable. If the contents change, Git creates a new object instead of modifying the old one.
 
-This means the identity of an object is derived entirely from what it contains. The same contents always map to the same hash, and any change produces a completely different one. This gives Git a reliable way to tell whether two pieces of data are identical or not.
+As a result, the identity of an object is derived entirely from what it contains. The same contents always map to the same hash, and any change produces a completely different one. This gives Git a reliable way to tell whether two pieces of data are identical or not.
 
-This is what people mean when they describe Git as a content-addressed database. Data isn’t stored under a filename or an incremental ID but stored under a key that is generated directly from the data itself. When Git needs data like a file, it doesn't look up where it lives instead, it recomputes the hash and uses that value to retrieve the exact object it needs.
+This is what people mean when they describe Git as a content-addressed database. Data isn’t stored under a filename or an incremental ID but stored under a key that is generated directly from the data itself. When Git needs data, such as a file, it recomputes the hash and uses that value to retrieve the exact object it needs.
 
-Once I understood this, it enabled me to conitue building the system.
+Once I understood this, it enabled me to continue building the system.
 
 ## The Building Blocks Behind Every Commit
 
@@ -56,7 +56,7 @@ Once you put these pieces together, Git’s internal model becomes much easier t
 
 A commit points to a tree.
 That tree points to blobs and other trees.
-Those blobs store file contents.
+Those blobs, in turn, store the raw file contents.
 
 ![Git Object Graph](/objects-example.png)
 
@@ -66,15 +66,15 @@ In this example, a commit points to a tree that represents the project root. Tha
 
 This model also explains why some of Git’s most powerful features feel almost effortless.
 
-As a branch is not a copy of your code, it’s just a name that points to a commit meaning a new pointer is created but not more duplication. Switching branches simply moves that pointer and updates the working directory to match the tree behind it. This allows developers to quickly iterate and develop features in isolation without worrying about storage overhead.
+A branch is not a copy of your code, it’s a name that points to a commit. Creating a new branch only creates a new pointer and so no additional data is duplicated. This allows developers to quickly iterate and develop features in isolation without worrying about storage overhead.
 
-History, is just a chain of commits pointing to one another. Git doesn’t reconstruct old versions by applying patches — it already has the full snapshot stored and ready to be checked out.
+History is just a chain of commits pointing to one another. Git doesn’t reconstruct old versions by applying patches, it already has the full snapshot stored and ready to be checked out.
 
 ## Why This Design Matters
 
 Understanding how Git stores data makes it easier to debug unexpected behaviour and reason about history and branching.
 
-More importantly, it changed how I think about tools I use every day. There's a real difference between knowing how to use something and understanding how it works.
+More importantly, it changed how I think about tools I use every day. There's a real difference between knowing how to use a tool and understanding how it actually works.
 
 ## Conclusion
 
