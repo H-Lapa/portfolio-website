@@ -1,14 +1,14 @@
 ---
 title: "What building git taught me about version control"
 date: "2024-12-26"
-category: "TBD"
+category: "Overview"
 description: "A deep dive into Git's internals by implementing core Git commands in Java."
 githubUrl: "https://github.com/H-Lapa/Java-Git"
 ---
 
 # What building git taught me about version control
 *4 Jan 2026*
-*5 min read*
+*6 min read*
 
 I thought I understood Git. I'd been using it for years, committing code on  GitHub or GitLab without much thought. Like most developers, I treated Git as a black box, relying on a few familiar commands like `git add`, `git commit`, `git push` and understanding basic branching strategies. 
 
@@ -62,7 +62,7 @@ A commit points to a tree.
 That tree points to blobs and other trees.
 Those blobs store file contents.
 
-![Git Object Graph](/objects-example-removebg-preview.png)
+![Git Object Graph](/objects-example.png)
 
 In this example, a commit points to a tree that represents the project root. That tree contains references to blobs (the actual file contents) and other trees (subdirectories), forming a complete snapshot of the repository at that moment in time.
 
