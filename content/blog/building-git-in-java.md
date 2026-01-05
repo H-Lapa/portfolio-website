@@ -1,398 +1,186 @@
 ---
-title: "Building Git from Scratch in Java"
+title: "What building git taught me about version control"
 date: "2024-12-26"
-category: "Tutorial"
-description: "A deep dive into Git's internals by implementing core Git commands in Java, from object storage to tree structures."
+category: "TBD"
+description: "A deep dive into Git's internals by implementing core Git commands in Java."
 githubUrl: "https://github.com/H-Lapa/Java-Git"
 ---
 
-# Building Git from Scratch in Java
+# What building git taught me about version control
+*4 Jan 2026*
+*5 min read*
 
-Have you ever wondered how Git actually works under the hood? What happens when you run `git commit` or `git clone`? To truly understand Git's elegant design, I decided to build a minimalistic implementation of Git's core commands in Java.
+I thought I understood Git. I'd been using it for years, committing code on  GitHub or GitLab without much thought. Like most developers, I treated Git as a black box, relying on a few familiar commands like `git add`, `git commit`, `git push` and understanding basic branching strategies. 
 
-## Why Build Your Own Git?
+But it wasn't until I built a Git implementation in Java that I realised how shallow my understand of Git's version control really was.
 
-Learning by doing is powerful. While reading about Git's internals helps, nothing compares to implementing them yourself. This project taught me:
+This project was motivated by a desire to better understand the tools I rely on daily and to learn what happens under the hood when running common Git commands.
 
-1. **How version control really works** - Understanding the three-object model
-2. **Cryptographic hashing** - SHA-1 for content addressing
-3. **Data structures** - Trees, directed acyclic graphs, and object storage
-4. **File compression** - Efficient storage mechanisms
-5. **Java fundamentals** - File I/O, process handling, and Maven
 
-## The Architecture of Git
+## Looking Past Git's Abstractions
 
-Before diving into implementation, it's crucial to understand Git's core concepts:
+Once I started looking past that abstraction, Git became much easier to reason about.
 
-### The Three Object Types
+Whenever Git needs to save a change, it records the contents, calculates a hash from those contents, and uses that hash as the object’s identity. From that point on, the object is treated as immutable. If the contents change, Git creates a new object instead of modifying the old one.
 
-Git stores everything as objects in the `.git/objects` directory:
+This means the identity of an object is derived entirely from what it contains. The same contents always map to the same hash, and any change produces a completely different one. This gives Git a reliable way to tell whether two pieces of data are identical or not.
 
-1. **Blobs** - Store file contents
-2. **Trees** - Store directory structures and references to blobs
-3. **Commits** - Store metadata, tree references, and parent commits
+This is what people mean when they describe Git as a content-addressed database. Data isn’t stored under a filename or an incremental ID but stored under a key that is generated directly from the data itself. When Git needs data like a file, it look up where it lives instead it recomputes the hash and uses that value to retrieve the exact object it needs.
 
-### Content-Addressable Storage
+Once I understood this, Git stopped feeling like a collection of special cases and started to feel like a system with clear, predictable rules.
 
-Git uses SHA-1 hashing to create unique identifiers for every object. This means:
-- Identical content always has the same hash
-- Content is deduplicated automatically
-- Data integrity is guaranteed (any change produces a different hash)
+## The Building Blocks Behind Every Commit
 
-## Implemented Commands
+Once the storage model clicked, the next question became obvious: what exactly is Git storing?
 
-### 1. `init` - Creating the Repository Structure
+It turns out Git builds everything on top of just three object types: blobs, trees, and commits. Every file, folder, and snapshot in a repository is represented using some combination of these objects.
 
-The first step in any Git workflow is initialization. This command creates the `.git` directory structure:
+Understanding these objects is the point where Git’s behaviour starts to feel predictable rather than magical.
 
-```bash
-java-git init
-```
+## Blobs: File Contents, Nothing More
 
-**What it does:**
-- Creates `.git/objects/` directory for storing blobs, trees, and commits
-- Creates `.git/refs/` for branch references
-- Sets up the basic repository structure
+A blob represents the contents of a file — and only the contents. It doesn’t store the filename, the path, or any metadata about where the file lives in your project.
 
-**Key learning:** Git is just a sophisticated file system. Everything lives in `.git/`.
+When Git saves a file, it hashes the contents and stores the resulting blob. If two files happen to have identical contents, Git will store them once and reference the same blob from multiple places.
 
-### 2. `hash-object` - Creating Blob Objects
+This explains why Git can be so efficient with storage: it never stores duplicate data unless the content actually changes.
 
-This command takes file content, generates a SHA-1 hash, and stores it as a blob:
+📌 Diagram suggestion:
+Blob object
 
-```bash
-java-git hash-object myfile.txt
-```
+Box labeled Blob
 
-**Implementation highlights:**
-- Read file contents
-- Create a blob object with header: `blob <size>\0<content>`
-- Generate SHA-1 hash of the blob
-- Compress using zlib/deflate
-- Store in `.git/objects/ab/cdef123...` (first 2 chars = directory, rest = filename)
+Attributes: content, hash
 
-**Key learning:** Git doesn't store diffs initially—it stores complete snapshots. Diffs are computed on-the-fly.
+Explicitly note: no filename, no path
 
-### 3. `cat-file` - Retrieving Objects
+## Trees: How Git Represents Directories
 
-The inverse of `hash-object`, this reads and decompresses stored objects:
+If blobs store file contents, trees are what give those blobs structure.
 
-```bash
-java-git cat-file -p <hash>
-```
+A tree represents a directory. It contains entries that map names (like filenames or folder names) to other objects — either blobs or other trees. This is how Git represents a full directory hierarchy without storing files directly inside folders.
 
-**What it does:**
-- Takes a SHA-1 hash
-- Locates the object in `.git/objects/`
-- Decompresses the content
-- Prints the blob content
+Each tree is also hashed based on its contents. If the structure of a directory changes — a file is added, removed, or renamed — Git creates a new tree object to represent that change.
 
-**Implementation challenge:** Handling zlib decompression in Java and parsing the object header correctly.
+📌 Diagram suggestion:
+Tree object
 
-### 4. `ls-tree` - Listing Tree Contents
+Box labeled Tree
 
-Trees store directory structures. This command lists what's inside a tree object:
+Entries:
 
-```bash
-java-git ls-tree <tree-hash>
-```
+src/ → tree
 
-**Tree object format:**
-```
-<mode> <type> <hash>\t<name>
-100644 blob abc123... file.txt
-040000 tree def456... src/
-```
+index.js → blob
 
-**Key learning:** Trees reference other trees (subdirectories) and blobs (files), creating a hierarchical structure.
+Arrows pointing to blobs and subtrees
 
-### 5. `write-tree` - Creating Tree Objects
+## Commits: Snapshots with History
 
-This command recursively converts a directory structure into tree objects:
+Commits are the objects we interact with most, but they’re surprisingly small.
 
-```bash
-java-git write-tree
-```
+A commit doesn’t store file contents or diffs. Instead, it points to:
 
-**Algorithm:**
-1. Scan current directory
-2. For each file: create/retrieve blob hash
-3. For each subdirectory: recursively call `write-tree`
-4. Create tree object with all entries
-5. Return tree hash
+A single tree object (the snapshot of the project at that moment)
 
-**This is where Git's efficiency shines:** Unchanged files reuse existing blob hashes, so only modified content is stored.
+One or more parent commits
 
-### 6. `commit-tree` - Creating Commits
+Metadata like author, timestamp, and commit message
 
-Commits tie everything together with metadata:
+This means every commit represents a complete snapshot of the repository, built entirely from references to existing objects.
 
-```bash
-java-git commit-tree <tree-hash> -p <parent-hash> -m "Commit message"
-```
+📌 Diagram suggestion (important):
+Commit object
 
-**Commit object structure:**
-```
-tree <tree-hash>
-parent <parent-hash>
-author Name <email> <timestamp>
-committer Name <email> <timestamp>
+Box labeled Commit
 
-Commit message goes here
-```
+Attributes:
 
-**Key learning:** Commits are just pointers to trees, with parent references forming a directed acyclic graph (DAG).
+tree → tree hash
 
-### 7. `clone` - Simulating Repository Cloning
+parent → commit hash
 
-The most complex command, simulating the cloning of a remote repository:
+metadata
 
-```bash
-java-git clone <url>
-```
+## Seeing the Whole Picture
 
-**Implementation:**
-- Fetch remote repository data
-- Recreate `.git` directory structure
-- Download and store all objects
-- Checkout the working directory
+Once you put these pieces together, Git’s internal model becomes much easier to visualise.
 
-**This demonstrates:** How distributed version control works—you get the entire history, not just the latest snapshot.
+A commit points to a tree.
+That tree points to blobs and other trees.
+Those blobs store file contents.
 
-## Technical Implementation Details
+Change a file, and Git creates a new blob.
+That leads to a new tree.
+Which leads to a new commit.
 
-### Maven Project Structure
+Everything else remains shared.
 
-The project uses Maven for dependency management:
+📌 Key diagram (centerpiece of the blog):
+High-level Git object graph
 
-```xml
-<project>
-  <groupId>com.example</groupId>
-  <artifactId>java-git</artifactId>
-  <version>1.0-SNAPSHOT</version>
+Commit
+  ↓
+Tree
+ ├── blob (file A)
+ ├── blob (file B)
+ └── tree
+       └── blob (file C)
 
-  <dependencies>
-    <!-- For SHA-1 hashing -->
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-    </dependency>
-  </dependencies>
-</project>
-```
 
-### SHA-1 Hashing in Java
+This single graph explains most of Git’s behaviour.
 
-Using Java's MessageDigest for content hashing:
+## Why Branches and History Are So Lightweight
 
-```java
-import java.security.MessageDigest;
+This model also explains why some of Git’s most powerful features feel almost effortless.
 
-public static String generateSHA1(byte[] content) {
-    try {
-        MessageDigest digest = MessageDigest.getInstance("SHA-1");
-        byte[] hash = digest.digest(content);
+A branch isn’t a copy of your code. It’s just a name that points to a commit. Creating a new branch means writing a new pointer, not duplicating any data. Switching branches simply moves that pointer and updates the working directory to match the tree behind it.
 
-        // Convert to hex string
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) hexString.append('0');
-            hexString.append(hex);
-        }
-        return hexString.toString();
-    } catch (Exception e) {
-        throw new RuntimeException(e);
-    }
-}
-```
+History, too, is just a chain of commits pointing to one another. Git doesn’t reconstruct old versions by applying patches — it already has the full snapshot stored and ready to be checked out.
 
-### File Compression
+📌 Diagram suggestion:
+Two branches pointing at different commits
 
-Git uses zlib compression. In Java, we use DeflaterOutputStream:
+main → commit A
 
-```java
-import java.util.zip.DeflaterOutputStream;
+feature → commit B
 
-public static byte[] compress(byte[] data) {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try (DeflaterOutputStream dos = new DeflaterOutputStream(baos)) {
-        dos.write(data);
-    }
-    return baos.toByteArray();
-}
-```
+Shared history behind both
 
-### Object Storage Pattern
 
-Storing objects in Git's two-character directory structure:
+## Why This Design Matters
 
-```java
-public static void storeObject(String hash, byte[] content) {
-    String dir = ".git/objects/" + hash.substring(0, 2);
-    String file = hash.substring(2);
+Rebuilding Git forced me to stop thinking in terms of commands and start thinking in terms of data. Once I did, many of Git’s quirks stopped feeling confusing.
 
-    new File(dir).mkdirs();
-    Files.write(Paths.get(dir, file), compress(content));
-}
-```
+Understanding how Git stores data makes it easier to:
 
-## Challenges Encountered
+Debug unexpected behaviour
 
-### 1. Understanding Object Formats
+Reason about history and branching
 
-Git's object format is deceivingly simple but has nuances:
-- Blob header: `blob <size>\0`
-- Tree entries: Specific binary format with modes
-- Null byte separators in various places
+Trust that Git won’t silently corrupt your work
 
-**Solution:** Carefully reading Git's documentation and using `git cat-file -p` to inspect real Git objects.
+Appreciate why Git scales so well across teams and projects
 
-### 2. File Path Handling
-
-Cross-platform path handling was tricky:
-- Windows uses `\`, Unix uses `/`
-- Git always uses `/` internally
-
-**Solution:** Always normalize paths when creating tree objects.
-
-### 3. Recursive Tree Writing
-
-Writing trees recursively while avoiding infinite loops:
-
-**Solution:** Track visited directories and ensure deterministic ordering.
-
-### 4. SHA-1 Hash Formatting
-
-Getting the exact byte sequence that Git uses for hashing:
-
-**Solution:** Include the object header (`blob 123\0`) before hashing, not just the content.
-
-## Key Insights About Git
-
-### 1. Git is a Content-Addressable Filesystem
-
-Everything is stored by its hash. This makes Git:
-- **Immutable** - Can't change content without changing the hash
-- **Distributed** - Easy to sync by comparing hashes
-- **Efficient** - Automatic deduplication
-
-### 2. Commits Are Cheap
-
-Creating a commit is just:
-- Writing a small commit object (~200 bytes)
-- No copying of files
-- No diff computation (that's for display only)
-
-### 3. Branches Are Just Pointers
-
-A branch is literally a file in `.git/refs/heads/` containing a commit hash. That's it.
-
-### 4. The Working Directory is Separate
-
-Git's object database is completely separate from your working files. Commands like `git checkout` just copy from the database to your working directory.
-
-## Performance Considerations
-
-### What This Implementation Lacks
-
-Real Git has many optimizations not in this educational version:
-
-1. **Pack files** - Git bundles objects for efficient network transfer
-2. **Delta compression** - Storing only diffs between similar objects
-3. **Index/staging area** - The `.git/index` file for fast status checks
-4. **Parallel operations** - Git uses multiple threads for operations
-5. **Smart protocol** - Efficient client-server communication
-
-### What We Got Right
-
-- **Content-addressable storage** - Same as real Git
-- **Three-object model** - Blobs, trees, commits
-- **SHA-1 hashing** - Identical to Git's approach
-- **Directory structure** - Compatible with Git's layout
-
-## Testing the Implementation
-
-You can test the implementation by:
-
-```bash
-# Initialize a repository
-./your_git.sh init
-
-# Create a blob
-echo "Hello, Git!" > test.txt
-./your_git.sh hash-object test.txt
-
-# Read it back
-./your_git.sh cat-file -p <hash>
-
-# Create a tree
-./your_git.sh write-tree
-
-# Create a commit
-./your_git.sh commit-tree <tree-hash> -m "Initial commit"
-```
-
-## What I Learned
-
-### Technical Skills
-
-1. **File I/O in Java** - Reading, writing, compression
-2. **Cryptographic hashing** - SHA-1 implementation
-3. **Data structures** - Trees and DAGs in practice
-4. **Maven** - Project management and builds
-5. **Shell scripting** - Wrapper scripts for ease of use
-
-### Conceptual Understanding
-
-1. **Version control is simpler than it seems** - It's just content-addressed storage with metadata
-2. **Hashing is powerful** - Content addressing solves many problems elegantly
-3. **Immutability matters** - Git's design relies on objects never changing
-4. **Abstractions hide complexity** - Commands like `git commit` do a lot behind the scenes
-
-### Software Engineering
-
-1. **Read the source** - Git's C source code was invaluable
-2. **Test incrementally** - Build one command at a time
-3. **Use the real thing as reference** - Compare output with actual Git
-4. **Start simple** - Implement core features before optimizations
-
-## Future Enhancements
-
-If I continue this project, potential additions:
-
-1. **Pack files** - Implement Git's optimization for storage
-2. **Index/staging area** - Add `git add` functionality
-3. **Branches** - Implement refs and HEAD
-4. **Merge** - Three-way merge algorithm
-5. **Remote operations** - Real `push` and `pull`
-6. **Diff algorithm** - Myers diff or histogram diff
-7. **Garbage collection** - Clean up unreachable objects
+More importantly, it changed how I think about tools I use every day. There’s a real difference between knowing how to use something and understanding how it works.
 
 ## Conclusion
 
-Building a Git implementation from scratch was one of the most educational projects I've undertaken. It demystified version control and showed me that even complex systems are built on simple, elegant foundations.
+Building a Git implementation in Java pushed me to look past the abstractions and understand the system underneath. Git turned out not to be magic at all — just a well-designed model built on simple, composable ideas.
 
-Git's design is beautiful:
-- **Simple object model** - Just three types
-- **Content addressing** - Automatic deduplication and integrity
-- **Immutability** - Objects never change
-- **Efficiency** - Only store what changes
+If you use Git daily, even a shallow understanding of its internals can make you more confident and effective when things go wrong.
 
-If you want to truly understand a tool, try building it yourself. The insights you gain are worth far more than just reading documentation.
+If you’re curious, you can explore the full implementation here:
+👉 Java Git implementation on GitHub
 
-**Key Takeaways:**
-- Git is a content-addressable filesystem with VCS features
-- Everything is an object: blobs, trees, or commits
-- SHA-1 hashing provides unique identifiers and integrity
-- Branches are just pointers to commits
-- The working directory is separate from Git's object database
+
 
 Check out the [full implementation on GitHub](https://github.com/H-Lapa/Java-Git) to explore the code and try it yourself!
 
 ## Resources
 
 For further learning:
-- [Git Internals - Git Book](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain)
-- [Git from the Bottom Up](https://jwiegley.github.io/git-from-the-bottom-up/)
-- [Git Source Code](https://github.com/git/git)
+- [What is in that .git directory?](https://blog.meain.io/2023/what-is-in-dot-git/)
+- [Git Internals - Git Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)
+- [CodeCrafters Git Challenge](https://codecrafters.io/challenges/git)
+
