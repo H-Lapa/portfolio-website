@@ -5,8 +5,6 @@ category: "Overview"
 description: "A deep dive into Git's internals by implementing core Git commands in Java."
 githubUrl: "https://github.com/H-Lapa/Java-Git"
 ---
-
-# What building git taught me about version control
 *4 Jan 2026*
 *6 min read*
 
