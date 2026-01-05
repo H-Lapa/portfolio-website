@@ -54,7 +54,7 @@ export default function ProjectCard({ project }: { project: Project }) {
                 {project.githubUrl && (
                   <button
                     onClick={(e) => handleButtonClick(e, project.githubUrl!)}
-                    className="flex items-center gap-1.5 text-xs font-medium text-foreground/80 hover:text-primary active:scale-95 transition-all px-3 py-2 sm:py-1.5 bg-background/60 backdrop-blur-sm rounded border border-border hover:border-primary z-10 relative touch-manipulation"
+                    className="flex items-center gap-1.5 text-xs font-medium text-foreground/80 hover:text-primary active:scale-95 transition-all px-3 py-2 sm:py-1.5 bg-background/60 backdrop-blur-sm rounded border border-border hover:border-primary z-10 relative touch-manipulation cursor-pointer"
                     title="View on GitHub"
                   >
                     <GithubIcon className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
@@ -63,7 +63,7 @@ export default function ProjectCard({ project }: { project: Project }) {
                 {project.blogPostSlug && (
                   <button
                     onClick={(e) => handleButtonClick(e, `/blog/${project.blogPostSlug}`)}
-                    className="flex items-center gap-1.5 text-xs font-medium text-foreground/80 hover:text-primary active:scale-95 transition-all px-3 py-2 sm:py-1.5 bg-background/60 backdrop-blur-sm rounded border border-border hover:border-primary z-10 relative touch-manipulation"
+                    className="flex items-center gap-1.5 text-xs font-medium text-foreground/80 hover:text-primary active:scale-95 transition-all px-3 py-2 sm:py-1.5 bg-background/60 backdrop-blur-sm rounded border border-border hover:border-primary z-10 relative touch-manipulation cursor-pointer"
                     title="Read Blog Post"
                   >
                     <FileText className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
