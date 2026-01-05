@@ -6,9 +6,6 @@ description: "A deep dive into Git's internals by implementing core Git commands
 githubUrl: "https://github.com/H-Lapa/Java-Git"
 ---
 
-*4 Jan 2026*
-*6 min read*
-
 I thought I understood Git. I'd been using it for years, committing code on  GitHub or GitLab without much thought. Like most developers, I treated Git as a black box, relying on a few familiar commands like `git add`, `git commit`, `git push` and understanding basic branching strategies. 
 
 But it wasn't until I built a Git implementation in Java that I realised how shallow my understand of Git's version control really was.
