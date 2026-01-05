@@ -105,8 +105,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               )}
             </header>
 
-            <TableOfContents headings={headings} />
-
             <MarkdownContent content={post.content} />
           </article>
 
