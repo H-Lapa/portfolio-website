@@ -80,7 +80,7 @@ More importantly, it changed how I think about tools I use every day. There's a 
 
 If you use Git daily, even a shallow understanding of its internals can make you more confident and effective when things go wrong.
 
-Check out the [full implementation on GitHub](https://github.com/H-Lapa/Java-Git) to explore the code and try it yourself!
+Check out the [my implementation on GitHub](https://github.com/H-Lapa/Java-Git) to explore the code and try it yourself!
 
 ## Resources
 
