@@ -40,7 +40,7 @@ This explains why Git can be so efficient with storage: it never stores duplicat
 
 If blobs store file contents, trees are what give those blobs structure.
 
-A tree object represents a directory. It contains entries that map names (like filenames or folder names) to other objects — either blobs or other trees. This is how Git represents a full directory hierarchy without storing files directly inside folders.
+A tree object represents a directory. It contains entries that map names (like filenames or folder names) to other tree or blob objects. This is how Git represents a full directory hierarchy without storing files directly inside folders.
 
 Each tree is also hashed based on its contents. If the structure of a directory changes like a file is added, removed, or renamed, then Git creates a new tree object to represent that change.
 
