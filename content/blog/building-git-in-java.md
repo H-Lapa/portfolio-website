@@ -1,5 +1,5 @@
 ---
-title: "What building git taught me about version control"
+title: "What building Git taught me about version control"
 date: "2024-12-26"
 category: "Overview"
 description: "A deep dive into Git's internals by implementing core Git commands in Java."
